@@ -21,7 +21,9 @@ class ISocialNetworks(IPortletDataProvider):
     same.
     """
 
-    header = schema.TextLine(title=_(u"Header"),
+    header = schema.TextLine(
+        title=_p(u"Portlet header"),
+        description=_p(u"Title of the rendered portlet"),
                              required=True)
 
     omit_border = schema.Bool(

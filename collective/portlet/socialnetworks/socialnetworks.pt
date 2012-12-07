@@ -1,0 +1,20 @@
+<dl class="portlet portletSocialNetworks"
+    i18n:domain="collective.portlet.socialnetworks">
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <span tal:content="view/data/header"></span>
+        <span class="portletTopRight"></span>
+    </dt>
+
+    <dd class="portletItem odd">
+        <a tal:condition="view/data/facebook" tal:attributes="href string:view/data/facebook"><img tal:attributes="src string:${view/site_url}/++resource++collective.socialicons/3d-designbolts/facebook.png" alt="facebook"/></a>
+    </dd>
+
+    <dd class="portletFooter">
+        <span class="portletBottomLeft"></span>
+        Footer
+        <span class="portletBottomRight"></span>
+    </dd>
+
+</dl>

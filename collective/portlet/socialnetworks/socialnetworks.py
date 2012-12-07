@@ -22,11 +22,30 @@ class ISocialNetworks(IPortletDataProvider):
                              required=True)
 
     facebook = schema.URI(title=_(u"Facebook page URL"), required=False)
+    facebook_icon = schema.Choice(title=_(u"Facebook icon"),
+                          vocabulary="collective.socialicons.facebook",
+                          default="classic-3d-graphics-vibe/facebook-64px.png")
     googlep = schema.URI(title=_(u"Google + URL"), required=False)
+    googlep_icon = schema.Choice(title=_(u"googlep icon"),
+                          vocabulary="collective.socialicons.googleplus",
+                          default="classic-3d-graphics-vibe/google-64px.png")
     linkedin = schema.URI(title=_(u"Linkedin URL"), required=False)
+    linkedin_icon = schema.Choice(title=_(u"linkedin icon"),
+                          vocabulary="collective.socialicons.linkedin",
+                          default="classic-3d-graphics-vibe/linkedin-64px.png")
     twitter = schema.URI(title=_(u"Twitter URL"), required=False)
+    twitter_icon = schema.Choice(title=_(u"twitter icon"),
+                          vocabulary="collective.socialicons.twitter",
+                          default="classic-3d-graphics-vibe/twitter-64px.png")
     youtube = schema.URI(title=_(u"Youtube URL"), required=False)
+    youtube_icon = schema.Choice(title=_(u"youtube icon"),
+                          vocabulary="collective.socialicons.youtube",
+                          default="classic-3d-graphics-vibe/youtube-64px.png")
     rss = schema.URI(title=_(u"RSS URL"), required=False)
+    rss_icon = schema.Choice(title=_(u"rss icon"),
+                          vocabulary="collective.socialicons.rss",
+                          default="classic-3d-graphics-vibe/rss-64px.png")
+
 
 class Assignment(base.Assignment):
     """Portlet assignment.
@@ -39,18 +58,30 @@ class Assignment(base.Assignment):
 
     def __init__(self, header=u"",
                  facebook="",
+                 facebook_icon="",
                  googlep="",
+                 googlep_icon="",
                  linkedin="",
+                 linkedin_icon="",
                  twitter="",
+                 twitter_icon="",
                  youtube="",
-                 rss=""):
+                 youtube_icon="",
+                 rss="",
+                 rss_icon=""):
         self.header = header
         self.facebook=facebook
+        self.facebook_icon=facebook_icon
         self.googlep=googlep
+        self.googlep_icon=googlep_icon
         self.linkedin=linkedin
+        self.linkedin_icon=linkedin_icon
         self.twitter=twitter
+        self.twitter_icon=twitter_icon
         self.youtube=youtube
+        self.youtube_icon=youtube_icon
         self.rss=rss
+        self.rss_icon=rss_icon
 
     @property
     def title(self):

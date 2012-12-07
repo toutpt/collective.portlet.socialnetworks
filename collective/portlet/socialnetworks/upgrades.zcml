@@ -5,7 +5,7 @@
     <upgradeStep
         source="*"
         destination="1002"
-        title="Upgrade"
+        title="Common Upgrade"
         description=""
         profile="collective.portlet.socialnetworks:default"
         handler=".upgrades.common"

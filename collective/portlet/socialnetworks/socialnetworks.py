@@ -9,6 +9,8 @@ from plone.portlets.interfaces import IPortletDataProvider
 from plone.app.portlets.portlets import base
 
 from collective.portlet.socialnetworks import SocialNetworksMessageFactory as _
+from Products.CMFPlone import PloneMessageFactory
+_p = PloneMessageFactory
 
 
 class ISocialNetworks(IPortletDataProvider):
@@ -22,6 +24,14 @@ class ISocialNetworks(IPortletDataProvider):
     header = schema.TextLine(title=_(u"Header"),
                              required=True)
 
+    omit_border = schema.Bool(
+        title=_p(u"Omit portlet border"),
+        description=_p(u"Tick this box if you want to render the text above "
+                       "without the standard header, border or footer."),
+        required=True,
+        default=False)
+
+
 class Assignment(base.Assignment):
     """Portlet assignment.
 
@@ -31,8 +41,11 @@ class Assignment(base.Assignment):
 
     implements(ISocialNetworks)
 
-    def __init__(self, header=u""):
+    omit_border = False
+
+    def __init__(self, header=u"", omit_border=False):
         self.header = header
+        self.omit_border = omit_border
 
     @property
     def title(self):
@@ -65,8 +78,8 @@ class Renderer(base.Renderer):
 
             if row.startswith('http'):
                 #unknow network
-                networks.append({'id': 'unknown%s'%unknown})
-                unknonw += 1
+                networks.append({'id': 'unknown%s' % unknown})
+                unknown += 1
             else:
                 splited = row.split('|')
                 if len(splited) == 2:
@@ -83,6 +96,7 @@ class AddForm(base.AddForm):
 
     def create(self, data):
         return Assignment(**data)
+
 
 class EditForm(base.EditForm):
     """Portlet edit form.

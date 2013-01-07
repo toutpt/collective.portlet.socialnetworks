@@ -4,10 +4,25 @@ Introduction
 This addon provide a portlet to let people follow your company accros
 multiple social networks
 
-Social Networks
-===============
+How it works / to use
+=====================
 
-This addons support for the following social networks:
+You can add social networks (to follow) using the settings registry
+''.
+
+To configure in your own policy do as follow::
+
+   <record name="collective.portlet.socialnetworks">
+       <value>
+         <element>facebook|https://www.facebook.com/cirbcibg</element>
+         <element>twitter|https://twitter.com/cirb_cibg</element>
+         <element>linkedin|http://www.linkedin.com/company/cirb_cibg</element>
+         <element>youtube|http://www.youtube.com/user/CIRBCIBG</element>
+       </value>
+   </record>
+
+This addon build links with icons and so provide icons. Provided icons are for
+the following social networks:
 
 * blogger
 * digg
@@ -23,13 +38,14 @@ This addons support for the following social networks:
 * vimeo
 * youtube
 
-Customize
-=========
+How to customize icons
+======================
 
 To change used icons you have two solution:
 * create a browser resource directory with the name of this addon and provide
 the new set of icons you want to use.
-* override the template using z3c.jbot (or plone.app.themingplugins)
+* override the template using z3c.jbot (or plone.app.themingplugins) to change
+icons urls.
 
 Credits
 =======
@@ -39,12 +55,23 @@ Icons
 
 |3d-designbolts|_
 
-
 |makinacom|_
+
 
 * `Planet Makina Corpus <http://www.makina-corpus.org>`_
 * `Contact Makina Corpus <mailto:python@makina-corpus.org>`_
 
+|cirb|_ CIRB / CIBG
+
+* `Contact CIRB <mailto:irisline@irisnet.be>`_
+
+People
+------
+
+- JeanMichel FRANCOIS aka toutpt <toutpt@gmail.com>
+
+.. |cirb| image:: http://www.cirb.irisnet.be/++theme++plonetheme.cirb/images/header-bg-fr.jpg
+.. _cirb: http://cirb.irisnet.be
 .. |makinacom| image:: http://depot.makina-corpus.org/public/logo.gif
 .. _makinacom:  http://www.makina-corpus.com
 .. _documentation: http://plone.org/documentation/kb/installing-add-ons-quick-how-to

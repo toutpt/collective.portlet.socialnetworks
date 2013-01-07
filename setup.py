@@ -25,7 +25,6 @@ setup(name='collective.portlet.socialnetworks',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'collective.socialicons',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

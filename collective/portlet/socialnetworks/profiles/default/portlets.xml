@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <portlets>
 
- <!-- Portlet type registrations -->
-
  <portlet
    addview="collective.portlet.socialnetworks.SocialNetworks"
    title="Social Networks"

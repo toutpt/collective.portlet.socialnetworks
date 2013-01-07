@@ -1,27 +1,14 @@
 <dl class="portlet portletSocialNetworks"
     i18n:domain="collective.portlet.socialnetworks">
-    <dt class="portletHeader">
+    <dt class="portletHeader" tal:condition="view/data/header">
         <span class="portletTopLeft"></span>
         <span tal:content="view/data/header"></span>
         <span class="portletTopRight"></span>
     </dt>
     <dd class="portletItem odd">
-        <a tal:condition="view/data/facebook" tal:attributes="href string:view/data/facebook"><img tal:attributes="src string:${view/site_url}/++resource++collective.socialicons/${view/data/facebook_icon}" alt="facebook"/></a>
-        <a tal:condition="view/data/twitter" 
-           tal:attributes="href string:view/data/twitter">
-             <img tal:attributes="src string:${view/site_url}/++resource++collective.socialicons/${view/data/twitter_icon}" alt=""/></a>
-        <a tal:condition="view/data/googlep" 
-           tal:attributes="href string:view/data/googlep">
-             <img tal:attributes="src string:${view/site_url}/++resource++collective.socialicons/${view/data/googlep_icon}" alt=""/></a>
-        <a tal:condition="view/data/linkedin"
-           tal:attributes="href string:view/data/linkedin">
-             <img tal:attributes="src string:${view/site_url}/++resource++collective.socialicons/${view/data/linkedin_icon}" alt=""/></a>
-        <a tal:condition="view/data/youtube"
-           tal:attributes="href string:view/data/youtube">
-             <img tal:attributes="src string:${view/site_url}/++resource++collective.socialicons/${view/data/youtube_icon}" alt=""/></a>
-        <a tal:condition="view/data/rss" 
-           tal:attributes="href string:view/data/rss">
-             <img tal:attributes="src string:${view/site_url}/++resource++collective.socialicons/${view/data/rss_icon}" alt=""/></a>
+      <tal:socialnetworks tal:repeat="socialnetwork view/get_socialnetworks">
+        <a tal:attributes="href string:socialnetwork/url; class string:socialnetwork socialnetwork-${socialnetwork/id}">
+             <img tal:attributes="src string:${view/site_url}/++resource++collective.portlet.socialnetworks/${socialnetwork/id}.png; alt socialnetwork/id"/></a>
+      </tal:socialnetworks>
     </dd>
-
 </dl>

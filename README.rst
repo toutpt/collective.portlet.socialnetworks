@@ -70,7 +70,7 @@ People
 
 - JeanMichel FRANCOIS aka toutpt <toutpt@gmail.com>
 
-.. |cirb| image:: http://www.cirb.irisnet.be/++theme++plonetheme.cirb/images/header-bg-fr.jpg
+.. |cirb| image:: http://www.cirb.irisnet.be/logo.jpg
 .. _cirb: http://cirb.irisnet.be
 .. |makinacom| image:: http://depot.makina-corpus.org/public/logo.gif
 .. _makinacom:  http://www.makina-corpus.com

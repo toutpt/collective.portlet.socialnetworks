@@ -44,9 +44,9 @@ How to customize icons
 To change used icons you have two solution:
 
 * create a browser resource directory with the name of this addon and provide
-the new set of icons you want to use.
+  the new set of icons you want to use.
 * override the template using z3c.jbot (or plone.app.themingplugins) to change
-icons urls.
+  icons urls.
 
 Credits
 =======

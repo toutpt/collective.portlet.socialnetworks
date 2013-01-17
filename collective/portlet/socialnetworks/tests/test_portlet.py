@@ -1,26 +1,23 @@
+import unittest2 as unittest
+
 from zope.component import getUtility, getMultiAdapter
 
-from plone.portlets.interfaces import IPortletType
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPortletAssignment
-from plone.portlets.interfaces import IPortletDataProvider
-from plone.portlets.interfaces import IPortletRenderer
-
+from plone.portlets import interfaces
 from plone.app.portlets.storage import PortletAssignmentMapping
 
 from collective.portlet.socialnetworks import socialnetworks
+from collective.portlet.socialnetworks.tests.base import IntegrationTestCase
 
-from collective.portlet.socialnetworks.tests.base import TestCase
 
+class IntegrationTestPortlet(IntegrationTestCase):
 
-class TestPortlet(TestCase):
-
-    def afterSetUp(self):
+    def setUp(self):
+        super(IntegrationTestCase, self).setUp()
         self.setRoles(('Manager', ))
 
     def test_portlet_type_registered(self):
         portlet = getUtility(
-            IPortletType,
+            interfaces.IPortletType,
             name='collective.portlet.socialnetworks.SocialNetworks')
         self.assertEquals(portlet.addview,
                           'collective.portlet.socialnetworks.SocialNetworks')
@@ -28,12 +25,13 @@ class TestPortlet(TestCase):
     def test_interfaces(self):
         # TODO: Pass any keyword arguments to the Assignment constructor
         portlet = socialnetworks.Assignment()
-        self.failUnless(IPortletAssignment.providedBy(portlet))
-        self.failUnless(IPortletDataProvider.providedBy(portlet.data))
+        self.assertTrue(interfaces.IPortletAssignment.providedBy(portlet))
+        data = portlet.data
+        self.assertTrue(interfaces.IPortletDataProvider.providedBy(data))
 
     def test_invoke_add_view(self):
         portlet = getUtility(
-            IPortletType,
+            interfaces.IPortletType,
             name='collective.portlet.socialnetworks.SocialNetworks')
         mapping = self.portal.restrictedTraverse(
             '++contextportlets++plone.leftcolumn')
@@ -64,20 +62,23 @@ class TestPortlet(TestCase):
         context = self.folder
         request = self.folder.REQUEST
         view = self.folder.restrictedTraverse('@@plone')
-        manager = getUtility(IPortletManager, name='plone.rightcolumn',
+        manager = getUtility(interfaces.IPortletManager,
+                             name='plone.rightcolumn',
                              context=self.portal)
 
         # TODO: Pass any keyword arguments to the Assignment constructor
         assignment = socialnetworks.Assignment()
 
         renderer = getMultiAdapter(
-            (context, request, view, manager, assignment), IPortletRenderer)
+            (context, request, view, manager, assignment),
+            interfaces.IPortletRenderer)
         self.failUnless(isinstance(renderer, socialnetworks.Renderer))
 
 
-class TestRenderer(TestCase):
+class IntegrationTestRenderer(IntegrationTestCase):
 
-    def afterSetUp(self):
+    def setUp(self):
+        super(IntegrationTestRenderer, self).setUp()
         self.setRoles(('Manager', ))
 
     def renderer(self, context=None, request=None, view=None, manager=None,
@@ -86,13 +87,15 @@ class TestRenderer(TestCase):
         request = request or self.folder.REQUEST
         view = view or self.folder.restrictedTraverse('@@plone')
         manager = manager or getUtility(
-            IPortletManager, name='plone.rightcolumn', context=self.portal)
+            interfaces.IPortletManager,
+            name='plone.rightcolumn',
+            context=self.portal)
 
         # TODO: Pass any default keyword arguments to the Assignment
         # constructor.
         assignment = assignment or socialnetworks.Assignment()
         return getMultiAdapter((context, request, view, manager, assignment),
-                               IPortletRenderer)
+                               interfaces.IPortletRenderer)
 
     def test_render(self):
         # TODO: Pass any keyword arguments to the Assignment constructor.
@@ -105,8 +108,4 @@ class TestRenderer(TestCase):
 
 
 def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestPortlet))
-    suite.addTest(makeSuite(TestRenderer))
-    return suite
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)

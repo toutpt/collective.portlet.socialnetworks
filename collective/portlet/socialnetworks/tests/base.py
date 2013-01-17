@@ -1,45 +1,37 @@
-from Products.Five import zcml
-from Products.Five import fiveconfigure
-
-from Testing import ZopeTestCase as ztc
-
-from Products.PloneTestCase import PloneTestCase as ptc
-from Products.PloneTestCase.layer import onsetup
+import transaction
+import unittest2 as unittest
+from collective.portlet.socialnetworks import testing
+from zope.event import notify
+from zope.traversing.interfaces import BeforeTraverseEvent
 
 
-@onsetup
-def setup_product():
-    """Set up additional products and ZCML required to test this product.
+class UnitTestCase(unittest.TestCase):
 
-    The @onsetup decorator causes the execution of this body to be deferred
-    until the setup of the Plone site testing layer.
-    """
-
-    # Load the ZCML configuration for this package and its dependencies
-
-    fiveconfigure.debug_mode = True
-    import collective.portlet.socialnetworks
-    zcml.load_config('configure.zcml', collective.portlet.socialnetworks)
-    fiveconfigure.debug_mode = False
-
-    # We need to tell the testing framework that these products
-    # should be available. This can't happen until after we have loaded
-    # the ZCML.
-
-    ztc.installPackage('collective.portlet.socialnetworks')
-
-# The order here is important: We first call the deferred function and then
-# let PloneTestCase install it during Plone site setup
-
-setup_product()
-ptc.setupPloneSite(products=['collective.portlet.socialnetworks'])
+    def setUp(self):
+        pass
 
 
-class TestCase(ptc.PloneTestCase):
-    """Base class used for test cases
-    """
+class IntegrationTestCase(unittest.TestCase):
+
+    layer = testing.INTEGRATION
+
+    def setUp(self):
+        super(IntegrationTestCase, self).setUp()
+        self.portal = self.layer['portal']
+        testing.setRoles(self.portal, testing.TEST_USER_ID, ['Manager'])
+        self.portal.invokeFactory('Folder', 'test-folder')
+        testing.setRoles(self.portal, testing.TEST_USER_ID, ['Member'])
+        self.folder = self.portal['test-folder']
+        self.request = self.layer['request']
+        # setup manually the correct browserlayer, see:
+        # https://dev.plone.org/ticket/11673
+        notify(BeforeTraverseEvent(self.portal, self.request))
 
 
-class FunctionalTestCase(ptc.FunctionalTestCase):
-    """Test case class used for functional (doc-)tests
-    """
+class FunctionalTestCase(IntegrationTestCase):
+
+    layer = testing.FUNCTIONAL
+
+    def setUp(self):
+        #we must commit the transaction
+        transaction.commit()

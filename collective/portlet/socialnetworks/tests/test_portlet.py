@@ -12,7 +12,7 @@ from collective.portlet.socialnetworks.tests.base import IntegrationTestCase
 class IntegrationTestPortlet(IntegrationTestCase):
 
     def setUp(self):
-        super(IntegrationTestCase, self).setUp()
+        super(IntegrationTestPortlet, self).setUp()
         self.setRoles(('Manager', ))
 
     def test_portlet_type_registered(self):

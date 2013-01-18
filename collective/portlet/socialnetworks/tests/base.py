@@ -27,6 +27,11 @@ class IntegrationTestCase(unittest.TestCase):
         # https://dev.plone.org/ticket/11673
         notify(BeforeTraverseEvent(self.portal, self.request))
 
+    def setRoles(self, roles):
+        testing.setRoles(self.portal,
+                         testing.TEST_USER_ID,
+                         roles)
+
 
 class FunctionalTestCase(IntegrationTestCase):
 

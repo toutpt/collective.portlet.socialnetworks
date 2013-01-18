@@ -1,5 +1,6 @@
 import unittest2 as unittest
 
+from pyquery import PyQuery
 from zope.component import getUtility, getMultiAdapter
 
 from plone.portlets import interfaces
@@ -39,40 +40,47 @@ class IntegrationTestPortlet(IntegrationTestCase):
             del mapping[m]
         addview = mapping.restrictedTraverse('+/' + portlet.addview)
 
-        # TODO: Pass a dictionary containing dummy form inputs from the add
-        # form.
-        # Note: if the portlet has a NullAddForm, simply call
-        # addview() instead of the next line.
-        addview.createAndAdd(data={})
+        addview.createAndAdd(data={'header': u'Follow us'})
 
         self.assertEquals(len(mapping), 1)
-        self.failUnless(isinstance(mapping.values()[0],
-                                   socialnetworks.Assignment))
+        self.assertIsInstance(mapping.values()[0], socialnetworks.Assignment)
 
     def test_invoke_edit_view(self):
         # NOTE: This test can be removed if the portlet has no edit form
         mapping = PortletAssignmentMapping()
-        request = self.folder.REQUEST
+        request = self.request
 
         mapping['foo'] = socialnetworks.Assignment()
         editview = getMultiAdapter((mapping['foo'], request), name='edit')
-        self.failUnless(isinstance(editview, socialnetworks.EditForm))
+        self.assertIsInstance(editview, socialnetworks.EditForm)
 
     def test_obtain_renderer(self):
         context = self.folder
-        request = self.folder.REQUEST
+        request = self.request
         view = self.folder.restrictedTraverse('@@plone')
         manager = getUtility(interfaces.IPortletManager,
                              name='plone.rightcolumn',
                              context=self.portal)
 
         # TODO: Pass any keyword arguments to the Assignment constructor
-        assignment = socialnetworks.Assignment()
+        assignment = socialnetworks.Assignment(header="Follow us")
 
         renderer = getMultiAdapter(
             (context, request, view, manager, assignment),
             interfaces.IPortletRenderer)
-        self.failUnless(isinstance(renderer, socialnetworks.Renderer))
+        self.assertIsInstance(renderer, socialnetworks.Renderer)
+        pq = PyQuery(renderer.render())
+        links = pq('a')
+        self.assertEqual(len(links), 4)
+        facebook, twitter, linkedin, youtube = links
+        self.assertEqual(facebook.attrib['href'],
+                         'https://www.facebook.com/cirbcibg')
+        self.assertEqual(twitter.attrib['href'],
+                         'https://twitter.com/cirb_cibg')
+        self.assertEqual(linkedin.attrib['href'],
+                         'http://www.linkedin.com/company/cirb_cibg')
+        self.assertEqual(youtube.attrib['href'],
+                         'http://www.youtube.com/user/CIRBCIBG')
 
 
 class IntegrationTestRenderer(IntegrationTestCase):

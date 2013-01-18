@@ -35,7 +35,7 @@ setup(name='collective.portlet.socialnetworks',
           # -*- Extra requirements: -*-
       ],
       extras_require=dict(
-          test=['plone.app.testing'],
+          test=['plone.app.testing', 'pyquery'],
       ),
       entry_points="""
       # -*- Entry points: -*-

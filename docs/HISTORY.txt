@@ -4,7 +4,7 @@ Changelog
 1.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix rendered links. Add tests.
 
 
 1.1 (2013-01-16)

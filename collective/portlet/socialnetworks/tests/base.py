@@ -18,19 +18,24 @@ class IntegrationTestCase(unittest.TestCase):
     def setUp(self):
         super(IntegrationTestCase, self).setUp()
         self.portal = self.layer['portal']
+        self.request = self.layer['request']
+
         testing.setRoles(self.portal, testing.TEST_USER_ID, ['Manager'])
         self.portal.invokeFactory('Folder', 'test-folder')
         testing.setRoles(self.portal, testing.TEST_USER_ID, ['Member'])
         self.folder = self.portal['test-folder']
-        self.request = self.layer['request']
-        # setup manually the correct browserlayer, see:
-        # https://dev.plone.org/ticket/11673
-        notify(BeforeTraverseEvent(self.portal, self.request))
+
+        self.registry = self.portal.portal_registry
+        key = 'collective.portlet.socialnetworks'
+        self.registry[key] = (
+            u"facebook|https://www.facebook.com/cirbcibg",
+            u"twitter|https://twitter.com/cirb_cibg",
+            u"linkedin|http://www.linkedin.com/company/cirb_cibg",
+            u"youtube|http://www.youtube.com/user/CIRBCIBG",
+            )
 
     def setRoles(self, roles):
-        testing.setRoles(self.portal,
-                         testing.TEST_USER_ID,
-                         roles)
+        testing.setRoles(self.portal, testing.TEST_USER_ID, roles)
 
 
 class FunctionalTestCase(IntegrationTestCase):

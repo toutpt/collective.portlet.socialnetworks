@@ -62,25 +62,12 @@ class IntegrationTestPortlet(IntegrationTestCase):
                              name='plone.rightcolumn',
                              context=self.portal)
 
-        # TODO: Pass any keyword arguments to the Assignment constructor
         assignment = socialnetworks.Assignment(header="Follow us")
 
         renderer = getMultiAdapter(
             (context, request, view, manager, assignment),
             interfaces.IPortletRenderer)
         self.assertIsInstance(renderer, socialnetworks.Renderer)
-        pq = PyQuery(renderer.render())
-        links = pq('a')
-        self.assertEqual(len(links), 4)
-        facebook, twitter, linkedin, youtube = links
-        self.assertEqual(facebook.attrib['href'],
-                         'https://www.facebook.com/cirbcibg')
-        self.assertEqual(twitter.attrib['href'],
-                         'https://twitter.com/cirb_cibg')
-        self.assertEqual(linkedin.attrib['href'],
-                         'http://www.linkedin.com/company/cirb_cibg')
-        self.assertEqual(youtube.attrib['href'],
-                         'http://www.youtube.com/user/CIRBCIBG')
 
 
 class IntegrationTestRenderer(IntegrationTestCase):
@@ -99,20 +86,28 @@ class IntegrationTestRenderer(IntegrationTestCase):
             name='plone.rightcolumn',
             context=self.portal)
 
-        # TODO: Pass any default keyword arguments to the Assignment
-        # constructor.
-        assignment = assignment or socialnetworks.Assignment()
+        assignment = assignment or \
+            socialnetworks.Assignment(header="Follow us")
         return getMultiAdapter((context, request, view, manager, assignment),
                                interfaces.IPortletRenderer)
 
     def test_render(self):
-        # TODO: Pass any keyword arguments to the Assignment constructor.
         r = self.renderer(context=self.portal,
                           assignment=socialnetworks.Assignment())
         r = r.__of__(self.folder)
         r.update()
-        #output = r.render()
-        # TODO: Test output
+        pq = PyQuery(r.render())
+        links = pq('a')
+        self.assertEqual(len(links), 4)
+        facebook, twitter, linkedin, youtube = links
+        self.assertEqual(facebook.attrib['href'],
+                         'https://www.facebook.com/cirbcibg')
+        self.assertEqual(twitter.attrib['href'],
+                         'https://twitter.com/cirb_cibg')
+        self.assertEqual(linkedin.attrib['href'],
+                         'http://www.linkedin.com/company/cirb_cibg')
+        self.assertEqual(youtube.attrib['href'],
+                         'http://www.youtube.com/user/CIRBCIBG')
 
 
 def test_suite():
